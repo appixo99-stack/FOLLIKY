@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Like Story Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f4f4f9; }
+        button { background: #ff0055; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; }
+        button:hover { background: #e0004d; }
+    </style>
+</head>
+<body>
+
+    <h2>لوحة تحكم التطبيق</h2>
+    <p>اضغط على الزر أدناه لتجربة إرسال طلب جديد إلى السيرفر:</p>
+    
+    <!-- زر تجريبي لإرسال طلب -->
+    <button onclick="sendTestTask()">إرسال طلب جديد</button>
+
+    <!-- ربط فايربيس وتشغيل الكود البرمجي -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // إعدادات مشروعك
+        const firebaseConfig = {
+          apiKey: "AIzaSyAH09xZLWfatTnUTr-I7TFIPMPg54AkJCE",
+          authDomain: "likeme-738d8.firebaseapp.com",
+          projectId: "likeme-738d8",
+          storageBucket: "likeme-738d8.firebasestorage.app",
+          messagingSenderId: "1026735502576",
+          appId: "1:1026735502576:web:91f07715592a175bb43e35",
+          measurementId: "G-FBM38KBSB8"
+        };
+
+        // تهيئة فايربيس
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // جعل الدالة متاحة للزر
+        window.sendTestTask = async function() {
+            try {
+                const docRef = await addDoc(collection(db, "tasks"), {
+                    account: "Test_User_123",
+                    type: "follow",
+                    status: "pending",
+                    timestamp: new Date()
+                });
+                alert("تم إرسال الطلب بنجاح إلى قاعدة البيانات! المعرف: " + docRef.id);
+            } catch (e) {
+                alert("حدث خطأ: " + e.message);
+            }
+        };
+    </script>
+
+</body>
+</html>
