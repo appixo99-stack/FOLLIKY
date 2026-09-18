@@ -9,125 +9,117 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        body { background: #f8f9fa; color: #333; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-
-        /* شاشة تسجيل الدخول والشروط */
-        #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px;
+        body { 
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); 
+            color: #333; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; 
         }
-        .login-card {
-            background: white; width: 100%; max-width: 400px; border-radius: 20px;
-            padding: 30px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+        /* الواجهة الرئيسية العصرية */
+        .main-card {
+            background: white; width: 100%; max-width: 400px; border-radius: 24px;
+            padding: 30px 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.25);
             animation: fadeIn 0.5s ease-in-out;
         }
-        .app-logo { font-size: 40px; background: linear-gradient(45deg, #f09433, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; margin-bottom: 10px; }
-        .app-subtitle { font-size: 14px; color: #666; margin-bottom: 25px; }
+        .app-logo { font-size: 38px; background: linear-gradient(45deg, #f09433, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; margin-bottom: 5px; }
+        .app-subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
         
         .rules-box {
             background: #fff5f7; border: 1px solid #ffd1d8; border-radius: 12px;
-            padding: 15px; text-align: right; margin-bottom: 25px;
+            padding: 12px; text-align: right; margin-bottom: 20px;
         }
-        .rules-box h3 { font-size: 15px; color: #cc2366; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .rules-box ul { list-style: none; font-size: 13px; color: #555; }
-        .rules-box li { margin-bottom: 8px; position: relative; padding-right: 18px; }
+        .rules-box h3 { font-size: 14px; color: #cc2366; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .rules-box ul { list-style: none; font-size: 12px; color: #555; }
+        .rules-box li { margin-bottom: 6px; position: relative; padding-right: 16px; }
         .rules-box li::before { content: "•"; color: #dc2743; font-weight: bold; position: absolute; right: 0; }
 
-        .btn-instagram {
+        .btn-action {
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
             color: white; border: none; width: 100%; padding: 14px; font-size: 16px;
             font-weight: 700; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
             transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .btn-instagram:active { transform: scale(0.98); }
+        .btn-action:active { transform: scale(0.98); }
 
-        /* واجهة المتصفح الداخلية (WebView Area) */
-        #app-container { display: none; flex-direction: column; width: 100%; height: 100%; position: relative; }
+        /* شاشة المتصفح المدمج (تظهر عند الضغط على دخول) */
+        #browser-screen {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f8f9fa; flex-direction: column; z-index: 2000;
+        }
         .top-navbar {
             background: white; height: 60px; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 15px; border-bottom: 1px solid #dbdbdb; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 10;
+            padding: 0 15px; border-bottom: 1px solid #dbdbdb; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .top-navbar .brand { font-weight: 900; font-size: 20px; background: linear-gradient(45deg, #f09433, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .user-points { background: #f0f2f5; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; color: #e6683c; }
-
-        .browser-frame { flex: 1; width: 100%; border: none; background: white; }
-
-        /* زر الإضافة العائم الذكي (+) */
-        .floating-action-btn {
-            position: absolute; bottom: 30px; left: 30px; width: 60px; height: 60px;
-            background: linear-gradient(45deg, #f09433, #bc1888); color: white; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 24px;
-            box-shadow: 0 6px 20px rgba(188, 24, 136, 0.5); cursor: pointer; z-index: 100;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .floating-action-btn:hover { transform: scale(1.1); }
+        .top-navbar .brand { font-weight: 900; font-size: 18px; background: linear-gradient(45deg, #f09433, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .back-home { background: none; border: none; font-size: 16px; color: #dc2743; cursor: pointer; font-weight: 700; }
+        
+        .browser-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; }
+        .browser-content p { font-size: 15px; color: #555; margin-bottom: 20px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- شاشة تسجيل الشروط والترحيب -->
-    <div id="login-screen">
-        <div class="login-card">
-            <div class="app-logo"><i class="fa-brands fa-instagram"></i> FOLLIKY</div>
-            <div class="app-subtitle">شبكة التبادل التفاعلي والمتابعين الأذكياء</div>
-            
-            <div class="rules-box">
-                <h3><i class="fa-solid fa-shield-halved"></i> شروط حساب الانستغرام:</h3>
-                <ul>
-                    <li>يجب أن يكون الحساب حقيقياً أو شبه حقيقي.</li>
-                    <li>يجب أن يكون اسم المستخدم حقيقياً وخالياً من الرموز والأرقام العشوائية.</li>
-                    <li>يجب أن يحتوي الحساب على صورة رمزية أو شخصية حقيقية.</li>
-                </ul>
-            </div>
-
-            <button class="btn-instagram" onclick="startApp()">
-                <i class="fa-brands fa-instagram"></i> تسجيل باستخدام حساب انستغرام
-            </button>
+    <!-- الواجهة الرئيسية العصرية (تظل ظاهرة دائماً) -->
+    <div class="main-card" id="main-card">
+        <div class="app-logo"><i class="fa-brands fa-instagram"></i> FOLLIKY</div>
+        <div class="app-subtitle">شبكة التبادل التفاعلي والمتابعين الأذكياء</div>
+        
+        <div class="rules-box">
+            <h3><i class="fa-solid fa-shield-halved"></i> شروط حساب الانستغرام:</h3>
+            <ul>
+                <li>يجب أن يكون الحساب حقيقياً أو شبه حقيقي.</li>
+                <li>يجب أن يكون اسم المستخدم حقيقياً وخالياً من الرموز العشوائية.</li>
+                <li>يجب أن يحتوي الحساب على صورة شخصية أو رمزية واضحة.</li>
+            </ul>
         </div>
+
+        <!-- الزر يتغير نصاً وشكلاً حسب حالة الحفظ في LocalStorage -->
+        <button class="btn-action" id="auth-btn" onclick="handleAuthAction()">
+            <i class="fa-brands fa-instagram"></i> تسجيل باستخدام حساب انستغرام
+        </button>
     </div>
 
-    <!-- واجهة التطبيق الرئيسية والمتصفح -->
-    <div id="app-container">
+    <!-- شاشة المتصفح الداخلي عند الدخول -->
+    <div id="browser-screen">
         <div class="top-navbar">
+            <button class="back-home" onclick="goBackHome()"><i class="fa-solid fa-arrow-right"></i> الرئيسية</button>
             <div class="brand">FOLLIKY</div>
-            <div class="user-points"><i class="fa-solid fa-coins"></i> <span id="points-val">0</span> نقطة</div>
         </div>
-
-        <!-- محاكي صفحة انستغرام (WebView) -->
-        <iframe class="browser-frame" id="ig-frame" src="https://www.instagram.com"></iframe>
-
-        <!-- زر الإضافة العائم (+) -->
-        <div class="floating-action-btn" onclick="triggerAction()" title="زيادة التفاعل">
-            <i class="fa-solid fa-plus"></i>
+        <div class="browser-content">
+            <i class="fa-brands fa-instagram" style="font-size: 60px; color: #dc2743; margin-bottom: 15px;"></i>
+            <p>أنت متصل الآن بحسابك. يمكنك تصفح المنشورات أو الحسابات وزيادة التفاعل.</p>
+            <a href="https://www.instagram.com" target="_blank" class="btn-action" style="text-decoration: none; max-width: 250px;">فتح انستغرام للتصفح</a>
         </div>
     </div>
 
     <script>
-        // التحقق من وجود الجلسة المحفوظة مسبقاً في LocalStorage
+        // التحقق من حالة الحفظ في LocalStorage عند فتح التطبيق
         window.onload = function() {
-            const savedSession = localStorage.getItem("folliky_logged");
-            if (savedSession === "true") {
-                showAppUI();
+            const savedAccount = localStorage.getItem("folliky_logged");
+            if (savedAccount === "true") {
+                // إذا كان مسجلاً من قبل، نجعل الزر يتحول إلى زر "دخول" فقط
+                document.getElementById("auth-btn").innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول';
             }
         };
 
-        function startApp() {
-            // حفظ حالة الدخول في الذاكرة المحلية للجهاز
-            localStorage.setItem("folliky_logged", "true");
-            showAppUI();
+        function handleAuthAction() {
+            const savedAccount = localStorage.getItem("folliky_logged");
+            
+            if (savedAccount !== "true") {
+                // أول مرة: نحفظ الحالة ونعتبره سجل دخوله
+                localStorage.setItem("folliky_logged", "true");
+                document.getElementById("auth-btn").innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول';
+                alert("تم تسجيل الحساب وحفظه بنجاح!");
+            }
+            
+            // فتح شاشة المتصفح/المهام
+            document.getElementById("browser-screen").style.display = "flex";
         }
 
-        function showAppUI() {
-            document.getElementById("login-screen").style.display = "none";
-            document.getElementById("app-container").style.display = "flex";
-        }
-
-        function triggerAction() {
-            // هذه الدالة ستتفاعل لاحقاً مع المنشور أو الملف الشخصي المفتوح داخل المتصفح
-            alert("تم تفعيل زر الإضافة الذكي (+) بنجاح! سيتم ربطه بجمع النقاط والمهام.");
+        function goBackHome() {
+            // العودة للواجهة الرئيسية مع بقاء الزر على وضع "دخول"
+            document.getElementById("browser-screen").style.display = "none";
         }
     </script>
 </body>
