@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOLLIKY - التفاعل الذكي</title>
-    <!-- استيراد خطوط عصرية وأيقونات -->
+    <title>FOLLIKY - شبكة التبادل التفاعلي</title>
+    <!-- استيراد خطوط وأيقونات عصرية -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
         body { 
             background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); 
-            color: #333; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; 
+            color: #333; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 15px;
         }
 
-        /* الواجهة الرئيسية العصرية */
         .main-card {
             background: white; width: 100%; max-width: 400px; border-radius: 24px;
             padding: 30px 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-            animation: fadeIn 0.5s ease-in-out;
         }
         .app-logo { font-size: 38px; background: linear-gradient(45deg, #f09433, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; margin-bottom: 5px; }
         .app-subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
@@ -36,32 +34,24 @@
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
             color: white; border: none; width: 100%; padding: 14px; font-size: 16px;
             font-weight: 700; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
-            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;
         }
         .btn-action:active { transform: scale(0.98); }
 
-        /* شاشة المتصفح المدمج (تظهر عند الضغط على دخول) */
-        #browser-screen {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #f8f9fa; flex-direction: column; z-index: 2000;
+        .btn-secondary {
+            background: #f0f2f5; color: #333; border: none; width: 100%; padding: 12px; font-size: 14px;
+            font-weight: 700; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .top-navbar {
-            background: white; height: 60px; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 15px; border-bottom: 1px solid #dbdbdb; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .top-navbar .brand { font-weight: 900; font-size: 18px; background: linear-gradient(45deg, #f09433, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .back-home { background: none; border: none; font-size: 16px; color: #dc2743; cursor: pointer; font-weight: 700; }
-        
-        .browser-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; }
-        .browser-content p { font-size: 15px; color: #555; margin-bottom: 20px; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #dashboard-view { display: none; }
+        .stats-box { background: #f9f9f9; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: right; }
+        .stats-box p { font-size: 14px; color: #555; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
-    <!-- الواجهة الرئيسية العصرية (تظل ظاهرة دائماً) -->
-    <div class="main-card" id="main-card">
+    <!-- الواجهة الأولى: الشروط وتسجيل الحساب -->
+    <div class="main-card" id="auth-card">
         <div class="app-logo"><i class="fa-brands fa-instagram"></i> FOLLIKY</div>
         <div class="app-subtitle">شبكة التبادل التفاعلي والمتابعين الأذكياء</div>
         
@@ -74,52 +64,107 @@
             </ul>
         </div>
 
-        <!-- الزر يتغير نصاً وشكلاً حسب حالة الحفظ في LocalStorage -->
-        <button class="btn-action" id="auth-btn" onclick="handleAuthAction()">
+        <button class="btn-action" onclick="registerAccount()">
             <i class="fa-brands fa-instagram"></i> تسجيل باستخدام حساب انستغرام
         </button>
     </div>
 
-    <!-- شاشة المتصفح الداخلي عند الدخول -->
-    <div id="browser-screen">
-        <div class="top-navbar">
-            <button class="back-home" onclick="goBackHome()"><i class="fa-solid fa-arrow-right"></i> الرئيسية</button>
-            <div class="brand">FOLLIKY</div>
+    <!-- لوحة التحكم بالتبادل (تظهر بعد التسجيل المتصل بقاعدة البيانات) -->
+    <div class="main-card" id="dashboard-view">
+        <div class="app-logo"><i class="fa-solid fa-circle-check" style="color: #28a745;"></i> متصل بالشبكة</div>
+        <div class="app-subtitle">تم ربط حسابك بقاعدة بيانات السيرفر بنجاح</div>
+        
+        <div class="stats-box">
+            <p><strong>حالة الشبكة:</strong> نشط وجاهز للتبادل</p>
+            <p><strong>الطلبات المرسلة:</strong> مسجلة في السيرفر</p>
         </div>
-        <div class="browser-content">
-            <i class="fa-brands fa-instagram" style="font-size: 60px; color: #dc2743; margin-bottom: 15px;"></i>
-            <p>أنت متصل الآن بحسابك. يمكنك تصفح المنشورات أو الحسابات وزيادة التفاعل.</p>
-            <a href="https://www.instagram.com" target="_blank" class="btn-action" style="text-decoration: none; max-width: 250px;">فتح انستغرام للتصفح</a>
-        </div>
+
+        <button class="btn-action" onclick="sendFollowRequest()">
+            <i class="fa-solid fa-user-plus"></i> طلب زيادة متابعين لحسابي (+)
+        </button>
+        
+        <button class="btn-secondary" onclick="logoutAccount()" style="color: #dc2743;">
+            <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج / تغيير الحساب
+        </button>
     </div>
 
-    <script>
-        // التحقق من حالة الحفظ في LocalStorage عند فتح التطبيق
+    <!-- ربط Firebase وتشغيل المنطق البرمجي -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // إعدادات مشروعك على Firebase
+        const firebaseConfig = {
+          apiKey: "AIzaSyAH09xZLWfatTnUTr-I7TFIPMPg54AkJCE",
+          authDomain: "likeme-738d8.firebaseapp.com",
+          projectId: "likeme-738d8",
+          storageBucket: "likeme-738d8.firebasestorage.app",
+          messagingSenderId: "1026735502576",
+          appId: "1:1026735502576:web:91f07715592a175bb43e35",
+          measurementId: "G-FBM38KBSB8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // التحقق من حالة الدخول عند فتح التطبيق
         window.onload = function() {
-            const savedAccount = localStorage.getItem("folliky_logged");
-            if (savedAccount === "true") {
-                // إذا كان مسجلاً من قبل، نجعل الزر يتحول إلى زر "دخول" فقط
-                document.getElementById("auth-btn").innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول';
+            if (localStorage.getItem("folliky_logged") === "true") {
+                showDashboard();
             }
         };
 
-        function handleAuthAction() {
-            const savedAccount = localStorage.getItem("folliky_logged");
-            
-            if (savedAccount !== "true") {
-                // أول مرة: نحفظ الحالة ونعتبره سجل دخوله
+        window.registerAccount = function() {
+            let igUser = prompt("أدخل اسم المستخدم (Username) لحسابك على انستغرام لتسجيله في الشبكة:");
+            if (igUser && igUser.trim() !== "") {
+                // حفظ الحالة محلياً
                 localStorage.setItem("folliky_logged", "true");
-                document.getElementById("auth-btn").innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول';
-                alert("تم تسجيل الحساب وحفظه بنجاح!");
+                localStorage.setItem("folliky_username", igUser);
+                
+                // فتح صفحة إنستغرام للتسجيل الفعلي
+                window.open("https://www.instagram.com/accounts/login/", "_blank");
+                
+                // حفظ الحساب في قاعدة البيانات Firebase
+                addDoc(collection(db, "users"), {
+                    username: igUser,
+                    joinedAt: new Date(),
+                    status: "active"
+                }).then(() => {
+                    alert("تم تسجيل الحساب في شبكة FOLLIKY وحفظه في السيرفر بنجاح!");
+                    showDashboard();
+                }).catch((error) => {
+                    alert("حدث خطأ أثناء الاتصال بالسيرفر: " + error.message);
+                });
             }
-            
-            // فتح شاشة المتصفح/المهام
-            document.getElementById("browser-screen").style.display = "flex";
+        };
+
+        window.sendFollowRequest = function() {
+            let targetUser = localStorage.getItem("folliky_username") || prompt("أدخل اسم المستخدم المطلوب زيادة المتابعين له:");
+            if (targetUser) {
+                // إرسال طلب المتابعة إلى قاعدة بيانات Firebase ليراها باقي المستخدمين
+                addDoc(collection(db, "tasks"), {
+                    target: targetUser,
+                    type: "follow",
+                    status: "pending",
+                    timestamp: new Date()
+                }).then(() => {
+                    alert("تم إرسال طلب زيادة المتابعين إلى السيرفر بنجاح! سيتم تنفيذه عبر تفاعل أعضاء الشبكة.");
+                }).catch((error) => {
+                    alert("خطأ في إرسال الطلب: " + error.message);
+                });
+            }
+        };
+
+        function showDashboard() {
+            document.getElementById("auth-card").style.display = "none";
+            document.getElementById("dashboard-view").style.display = "block";
         }
 
-        function goBackHome() {
-            // العودة للواجهة الرئيسية مع بقاء الزر على وضع "دخول"
-            document.getElementById("browser-screen").style.display = "none";
+        window.logoutAccount = function() {
+            localStorage.removeItem("folliky_logged");
+            localStorage.removeItem("folliky_username");
+            document.getElementById("dashboard-view").style.display = "none";
+            document.getElementById("auth-card").style.display = "block";
         }
     </script>
 </body>
