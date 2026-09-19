@@ -57,7 +57,7 @@
         .nav-item.active { color: #dc2743; font-weight: 700; }
         .nav-item i { font-size: 20px; }
 
-        /* النوافذ المنبثقة العصرية */
+        /* النوافذ المنبثقة العصرية الخاصة بالتطبيق (بدون روابط متصفح مزعجة) */
         .custom-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
             z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px);
@@ -98,7 +98,7 @@
                         <li>يُمنع استخدام حسابات وهمية مضرة لضمان أمان شبكة التبادل.</li>
                     </ul>
                 </div>
-                <button class="btn-action" type="button" onclick="openInstagramLogin()">
+                <button class="btn-action" type="button" onclick="openInstagramLoginModal()">
                     <i class="fa-brands fa-instagram"></i> تسجيل الدخول بحساب انستغرام
                 </button>
                 <button class="btn-secondary" type="button" onclick="openTermsModal()">
@@ -109,8 +109,8 @@
             <div id="user-dashboard-view" style="display: none;">
                 <div class="user-balance">رصيد النقاط: <span id="lbl-balance">0</span> نقطة</div>
                 <div class="rules-box" style="text-align: center;">
-                    <p style="font-size: 15px; font-weight: 700; color: #333;">مرحباً بك في شبكة FOLLIKY</p>
-                    <p style="font-size: 13px; color: #666; margin-top: 8px;">حسابك مسجل وجاهز لنشاطات التبادل التفاعلي.</p>
+                    <p style="font-size: 15px; font-weight: 700; color: #333;">حساب المستخدم المتصل:</p>
+                    <p id="lbl-username" style="font-size: 16px; font-weight: 900; color: #cc2366; margin-top: 5px;">-</p>
                 </div>
                 <button class="btn-secondary" type="button" onclick="logoutAccount()" style="color: #dc2743; margin-top: 20px;">تسجيل الخروج / تغيير الحساب</button>
             </div>
@@ -175,12 +175,40 @@
 
     </div>
 
+    <!-- نافذة تسجيل الدخول الحقيقية العصرية (بدون روابط مزعجة وبدون هدايا وهمية) -->
+    <div id="modal-instagram-login" class="custom-modal">
+        <div class="modal-card">
+            <div class="modal-logo">FOLLIKY</div>
+            <h3 style="font-size: 16px; margin-bottom: 8px; color:#cc2366; font-weight:700;">تسجيل الدخول بانستغرام</h3>
+            <p style="font-size: 12.5px; color:#666; margin-bottom: 15px; line-height: 1.5;">
+                الخطوة 1: اضغط على زر فتح انستغرام وسجل دخولك بالحساب الحقيقي.<br>
+                الخطوة 2: اكتب اسم المستخدم (Username) الخاص بك هنا للربط.
+            </p>
+            <div class="form-group">
+                <label>اسم مستخدم انستغرام الخاص بك:</label>
+                <input type="text" id="input-ig-username" class="form-control" placeholder="مثال: my_username">
+            </div>
+            <button class="btn-action" type="button" style="padding: 12px; font-size:14px;" onclick="openRealInstagramPage()">1. فتح صفحة انستغرام للتسجيل</button>
+            <button class="btn-action" type="button" style="padding: 12px; font-size:14px; background: linear-gradient(45deg, #28a745, #218838);" onclick="confirmInstagramLogin()">2. تأكيد وحفظ الحساب</button>
+            <button class="btn-secondary" type="button" onclick="closeModals()">إلغاء</button>
+        </div>
+    </div>
+
+    <!-- نافذة التنبيهات العصرية الخاصة بالتطبيق بديلة للـ alert -->
+    <div id="modal-custom-alert" class="custom-modal">
+        <div class="modal-card">
+            <div class="modal-logo">FOLLIKY</div>
+            <p id="alert-message-text" style="font-size: 14.5px; color: #333; margin: 15px 0 20px 0; line-height: 1.6; font-weight: 500;"></p>
+            <button class="btn-action" type="button" style="padding: 12px; margin: 0;" onclick="closeModals()">حسناً، فهمت</button>
+        </div>
+    </div>
+
     <!-- نافذة الشروط الكاملة العصرية -->
     <div id="modal-terms" class="custom-modal">
         <div class="modal-card">
             <div class="modal-logo">FOLLIKY</div>
             <h3 style="font-size: 17px; margin-bottom: 12px; color:#cc2366; font-weight:700;">الشروط والأحكام الكاملة</h3>
-            <div class="rules-box" style="text-align: right; font-size: 12.5px; max-height: 250px; overflow-y: auto;">
+            <div class="rules-box" style="text-align: right; font-size: 12.5px; max-height: 220px; overflow-y: auto;">
                 <ul>
                     <li>يجب اختيار خيار "تسجيل الدخول" (Log In) حصراً وعدم إنشاء حساب جديد عند فتح انستغرام.</li>
                     <li>أن يكون الحساب حقيقياً ويحتوي على صورة رمزية واضحة ومنشورات تدل على نشاطه.</li>
@@ -188,7 +216,7 @@
                     <li>الالتزام بتبادل التفاعل بصدق لكي لا يتم حظر حسابك من الشبكة.</li>
                 </ul>
             </div>
-            <button class="btn-secondary" type="button" onclick="closeModals()">فهمت الشروط، إغلاق</button>
+            <button class="btn-secondary" type="button" onclick="closeModals()">إغلاق</button>
         </div>
     </div>
 
@@ -196,8 +224,8 @@
     <div id="modal-notif" class="custom-modal">
         <div class="modal-card">
             <div class="modal-logo">الإشعارات</div>
-            <div id="notif-content" style="text-align: right; font-size: 14px; color: #555; max-height: 220px; overflow-y: auto; margin-bottom: 15px; line-height: 1.6;">
-                <p style="padding: 10px 0; border-bottom: 1px solid #eee;">🔔 أهلاً بك في شبكة FOLLIKY التفاعلية. تابع الطلبات واربح النقاط بسهولة!</p>
+            <div id="notif-content" style="text-align: right; font-size: 14px; color: #555; max-height: 200px; overflow-y: auto; margin-bottom: 15px; line-height: 1.6;">
+                <p style="padding: 10px 0; border-bottom: 1px solid #eee;">🔔 أهلاً بك في شبكة FOLLIKY التفاعلية. ابدأ بجمع النقاط وتنفيذ الطلبات بكل أمان!</p>
             </div>
             <button class="btn-secondary" type="button" onclick="closeModals()">إغلاق</button>
         </div>
@@ -211,20 +239,55 @@
                 let authView = document.getElementById("auth-view");
                 let dashView = document.getElementById("user-dashboard-view");
                 let balanceLbl = document.getElementById("lbl-balance");
+                let usernameLbl = document.getElementById("lbl-username");
+
                 if(authView) authView.style.display = "none";
                 if(dashView) dashView.style.display = "block";
                 if(balanceLbl) balanceLbl.innerText = localStorage.getItem("folliky_balance") || "0";
+                if(usernameLbl) usernameLbl.innerText = localStorage.getItem("folliky_username") || "حساب مسجل";
             }
             loadTasksFromStorage();
             checkAdsLimit();
         };
 
-        function openInstagramLogin() {
-            localStorage.setItem("folliky_logged", "true");
-            if(!localStorage.getItem("folliky_balance")) {
-                localStorage.setItem("folliky_balance", "10");
+        // دالة عرض النافذة المنبثقة البديلة للـ alert المزعج
+        function showAppAlert(msg) {
+            let txtElem = document.getElementById("alert-message-text");
+            let modalElem = document.getElementById("modal-custom-alert");
+            if(txtElem && modalElem) {
+                txtElem.innerText = msg;
+                modalElem.style.display = "flex";
             }
+        }
+
+        function openInstagramLoginModal() {
+            let m = document.getElementById("modal-instagram-login");
+            if(m) m.style.display = "flex";
+        }
+
+        // الخطوة 1: فتح صفحة انستغرام الرسمية للتسجيل الحقيقي
+        function openRealInstagramPage() {
             window.open("https://www.instagram.com/accounts/login/", "_blank");
+        }
+
+        // الخطوة 2: تأكيد اسم المستخدم الحقيقي للمستخدم بعد تسجيله في انستغرام
+        function confirmInstagramLogin() {
+            let igInput = document.getElementById("input-ig-username");
+            if(!igInput) return;
+            let username = igInput.value.trim();
+
+            if(!username) {
+                showAppAlert("الرجاء إدخال اسم مستخدم انستغرام الخاص بك بعد تسجيل الدخول هناك.");
+                return;
+            }
+
+            localStorage.setItem("folliky_logged", "true");
+            localStorage.setItem("folliky_username", username);
+            if(!localStorage.getItem("folliky_balance")) {
+                localStorage.setItem("folliky_balance", "0"); // يبدأ برصيد 0 حقيقي دون هدايا وهمية
+            }
+
+            closeModals();
             location.reload();
         }
 
@@ -246,6 +309,7 @@
         window.logoutAccount = function() {
             localStorage.removeItem("folliky_logged");
             localStorage.removeItem("folliky_balance");
+            localStorage.removeItem("folliky_username");
             location.reload();
         };
 
@@ -290,7 +354,7 @@
         };
 
         window.createNewTask = function() {
-            if (!isLogged) { alert("يرجى تسجيل الدخول أولاً عبر انستغرام من الصفحة الرئيسية!"); return; }
+            if (!isLogged) { showAppAlert("يرجى تسجيل الدخول أولاً بربط حساب انستغرام من الصفحة الرئيسية!"); return; }
             
             let typeElem = document.getElementById('task-type');
             let linkElem = document.getElementById('task-link');
@@ -304,13 +368,13 @@
             let cost = type === 'follow' ? 4 : (type === 'like' ? 2 : 7);
 
             if (!link || !points || points < cost) {
-                alert(`الرجاء إدخال رابط صحيح وعدد نقاط كافٍ. الحد الأدنى لهذا الطلب هو ${cost} نقاط.`);
+                showAppAlert(`الرجاء إدخال رابط صحيح وعدد نقاط كافٍ. الحد الأدنى لهذا الطلب هو ${cost} نقاط.`);
                 return;
             }
 
             let currentBalance = parseInt(localStorage.getItem("folliky_balance") || "0");
             if (currentBalance < points) {
-                alert("عذراً، رصيدك الحالي من النقاط لا يكفي لإنشاء هذا الطلب!");
+                showAppAlert("عذراً، رصيدك الحالي من النقاط لا يكفي لإنشاء هذا الطلب!");
                 return;
             }
 
@@ -327,7 +391,7 @@
             tasks.push(newTask);
             localStorage.setItem("folliky_tasks", JSON.stringify(tasks));
 
-            alert("تم نشر طلبك بنجاح وحجز النقاط المستثمرة ليظهر للمستخدمين الآخرين في قائمة الطلبات!");
+            showAppAlert("تم نشر طلبك بنجاح وحجز النقاط المستثمرة ليظهر للمستخدمين الآخرين في قائمة الطلبات!");
             
             let balanceLbl = document.getElementById("lbl-balance");
             if(balanceLbl) balanceLbl.innerText = localStorage.getItem("folliky_balance");
@@ -363,7 +427,7 @@
         }
 
         window.executeRealTask = function(index) {
-            if (!isLogged) { alert("يرجى تسجيل الدخول أولاً!"); return; }
+            if (!isLogged) { showAppAlert("يرجى تسجيل الدخول أولاً!"); return; }
             
             let tasks = JSON.parse(localStorage.getItem("folliky_tasks") || "[]");
             if(!tasks[index]) return;
@@ -385,12 +449,12 @@
             }
 
             localStorage.setItem("folliky_tasks", JSON.stringify(tasks));
-            alert(`تم التحقق من تنفيذ المهمة بنجاح! تمت إضافة ${task.reward} نقاط إلى رصيدك.`);
+            showAppAlert(`تم التحقق من تنفيذ المهمة بنجاح! تمت إضافة ${task.reward} نقاط إلى رصيدك.`);
             loadTasksFromStorage();
         };
 
         window.watchAd = function() {
-            if (!isLogged) { alert("يرجى تسجيل الدخول أولاً لربح النقاط!"); return; }
+            if (!isLogged) { showAppAlert("يرجى تسجيل الدخول أولاً لربح النقاط!"); return; }
 
             let lastDate = localStorage.getItem("folliky_ads_date") || "";
             let count = parseInt(localStorage.getItem("folliky_ads_count") || "0");
@@ -398,7 +462,7 @@
 
             if (lastDate !== today) { count = 0; localStorage.setItem("folliky_ads_date", today); }
             if (count >= 3) {
-                alert("لقد تجاوزت الحد الأقصى للمشاهدة اليومية (3 إعلانات كل 24 ساعة).");
+                showAppAlert("لقد تجاوزت الحد الأقصى للمشاهدة اليومية (3 إعلانات كل 24 ساعة).");
                 return;
             }
 
@@ -409,7 +473,7 @@
             let balanceLbl = document.getElementById("lbl-balance");
             if(balanceLbl) balanceLbl.innerText = localStorage.getItem("folliky_balance");
 
-            alert("تم مشاهدة الإعلان بنجاح وإضافة 10 نقاط لرصيدك!");
+            showAppAlert("تم مشاهدة الإعلان بنجاح وإضافة 10 نقاط لرصيدك!");
             checkAdsLimit();
         };
 
