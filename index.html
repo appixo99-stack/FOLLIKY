@@ -20,13 +20,13 @@
         /* الشريط العلوي */
         .top-bar {
             background: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-bottom: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); z-index: 10;
         }
         .top-logo { font-size: 22px; background: linear-gradient(45deg, #f09433, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
         .notif-btn { background: #fff5f7; border: none; color: #cc2366; width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; font-size: 18px; }
 
         /* مناطق المحتوى */
-        .content-area { flex: 1; overflow-y: auto; padding: 25px; display: none; padding-bottom: 100px; }
+        .content-area { flex: 1; overflow-y: auto; padding: 25px; display: none; padding-bottom: 110px; }
         .content-area.active { display: block; }
 
         .user-balance { background: #fff5f7; border: 1px solid #ffd1d8; border-radius: 14px; padding: 15px; text-align: center; margin-bottom: 20px; font-weight: 700; color: #cc2366; font-size: 16px; box-shadow: 0 4px 10px rgba(204,35,102,0.05); }
@@ -42,7 +42,7 @@
             color: white; border: none; width: 100%; padding: 16px; font-size: 16px;
             font-weight: 700; border-radius: 14px; cursor: pointer; box-shadow: 0 6px 20px rgba(220, 39, 67, 0.3);
             display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;
-            transition: transform 0.2s;
+            transition: transform 0.1s;
         }
         .btn-action:active { transform: scale(0.98); }
 
@@ -83,7 +83,7 @@
         <!-- الشريط العلوي -->
         <div class="top-bar">
             <div class="top-logo"><i class="fa-brands fa-instagram"></i> FOLLIKY</div>
-            <button class="notif-btn" onclick="openNotificationsModal()"><i class="fa-solid fa-bell"></i></button>
+            <button class="notif-btn" type="button" onclick="openNotificationsModal()"><i class="fa-solid fa-bell"></i></button>
         </div>
 
         <!-- القسم الأول: الرئيسية والتسجيل والشروط الكاملة -->
@@ -98,10 +98,10 @@
                         <li>يُمنع استخدام حسابات وهمية مضرة لضمان أمان شبكة التبادل.</li>
                     </ul>
                 </div>
-                <button class="btn-action" onclick="openInstagramLogin()">
+                <button class="btn-action" type="button" onclick="openInstagramLogin()">
                     <i class="fa-brands fa-instagram"></i> تسجيل الدخول بحساب انستغرام
                 </button>
-                <button class="btn-secondary" onclick="openTermsModal()">
+                <button class="btn-secondary" type="button" onclick="openTermsModal()">
                     <i class="fa-solid fa-file-contract"></i> قراءة الشروط والأحكام الكاملة
                 </button>
             </div>
@@ -112,15 +112,15 @@
                     <p style="font-size: 15px; font-weight: 700; color: #333;">مرحباً بك في شبكة FOLLIKY</p>
                     <p style="font-size: 13px; color: #666; margin-top: 8px;">حسابك مسجل وجاهز لنشاطات التبادل التفاعلي.</p>
                 </div>
-                <button class="btn-secondary" onclick="logoutAccount()" style="color: #dc2743; margin-top: 20px;">تسجيل الخروج / تغيير الحساب</button>
+                <button class="btn-secondary" type="button" onclick="logoutAccount()" style="color: #dc2743; margin-top: 20px;">تسجيل الخروج / تغيير الحساب</button>
             </div>
         </div>
 
         <!-- القسم الثاني: الطلبات والتبادل -->
         <div id="section-2" class="content-area">
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button class="btn-secondary" style="margin:0; background:#dc2743; color:white;" onclick="switchTab('create')">إضافة طلب جديد (+)</button>
-                <button class="btn-secondary" style="margin:0;" onclick="switchTab('list')">الطلبات المتاحة</button>
+                <button class="btn-secondary" type="button" id="tab-btn-create" style="margin:0; background:#dc2743; color:white;" onclick="switchTab('create')">إضافة طلب جديد (+)</button>
+                <button class="btn-secondary" type="button" id="tab-btn-list" style="margin:0;" onclick="switchTab('list')">الطلبات المتاحة</button>
             </div>
 
             <div id="sub-create">
@@ -144,12 +144,11 @@
                     <label>النقاط المستثمرة في الطلب:</label>
                     <input type="number" id="task-points" class="form-control" placeholder="مثال: 20">
                 </div>
-                <button class="btn-action" onclick="createNewTask()">نشر الطلب وحجز النقاط</button>
+                <button class="btn-action" type="button" onclick="createNewTask()">نشر الطلب وحجز النقاط</button>
             </div>
 
             <div id="sub-list" style="display:none;">
                 <div id="tasks-container">
-                    <!-- تظهر الطلبات الحقيقية المنشورة هنا -->
                     <div style="text-align: center; color: #888; padding: 30px; font-size: 14px;">لا توجد طلبات متاحة حالياً. قم بإضافة طلب جديد أو انتظر ريثما ينشر المستخدمون الآخرون!</div>
                 </div>
             </div>
@@ -162,16 +161,16 @@
                 <p style="font-size: 13px; color: #555; margin-top: 5px; line-height: 1.5;">شاهد الإعلانات واربح 10 نقاط لكل إعلان (الحد الأقصى 3 إعلانات كل 24 ساعة).</p>
             </div>
             <div class="user-balance">الإعلانات المتبقية اليوم: <span id="ads-count">3</span></div>
-            <a href="go:ADS" onclick="watchAd(event)" style="text-decoration: none; display: block; margin-top: 15px;">
-                <button class="btn-action" style="padding: 16px;"><i class="fa-solid fa-play-circle"></i> مشاهدة إعلان لربح النقاط</button>
-            </a>
+            <div style="margin-top: 15px;">
+                <button class="btn-action" type="button" onclick="watchAd()"><i class="fa-solid fa-play-circle"></i> مشاهدة إعلان لربح النقاط</button>
+            </div>
         </div>
 
         <!-- القائمة السفلية -->
         <div class="bottom-nav">
-            <button class="nav-item active" onclick="changeSection(1, this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
-            <button class="nav-item" onclick="changeSection(2, this)"><i class="fa-solid fa-rectangle-list"></i> الطلبات</button>
-            <button class="nav-item" onclick="changeSection(3, this)"><i class="fa-solid fa-coins"></i> ربح نقاط</button>
+            <button class="nav-item active" type="button" onclick="changeSection(1, this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
+            <button class="nav-item" type="button" onclick="changeSection(2, this)"><i class="fa-solid fa-rectangle-list"></i> الطلبات</button>
+            <button class="nav-item" type="button" onclick="changeSection(3, this)"><i class="fa-solid fa-coins"></i> ربح نقاط</button>
         </div>
 
     </div>
@@ -189,7 +188,7 @@
                     <li>الالتزام بتبادل التفاعل بصدق لكي لا يتم حظر حسابك من الشبكة.</li>
                 </ul>
             </div>
-            <button class="btn-secondary" onclick="closeModals()">فهمت الشروط، إغلاق</button>
+            <button class="btn-secondary" type="button" onclick="closeModals()">فهمت الشروط، إغلاق</button>
         </div>
     </div>
 
@@ -200,7 +199,7 @@
             <div id="notif-content" style="text-align: right; font-size: 14px; color: #555; max-height: 220px; overflow-y: auto; margin-bottom: 15px; line-height: 1.6;">
                 <p style="padding: 10px 0; border-bottom: 1px solid #eee;">🔔 أهلاً بك في شبكة FOLLIKY التفاعلية. تابع الطلبات واربح النقاط بسهولة!</p>
             </div>
-            <button class="btn-secondary" onclick="closeModals()">إغلاق</button>
+            <button class="btn-secondary" type="button" onclick="closeModals()">إغلاق</button>
         </div>
     </div>
 
@@ -209,27 +208,40 @@
 
         window.onload = function() {
             if (isLogged) {
-                document.getElementById("auth-view").style.display = "none";
-                document.getElementById("user-dashboard-view").style.display = "block";
-                document.getElementById("lbl-balance").innerText = localStorage.getItem("folliky_balance") || "0";
+                let authView = document.getElementById("auth-view");
+                let dashView = document.getElementById("user-dashboard-view");
+                let balanceLbl = document.getElementById("lbl-balance");
+                if(authView) authView.style.display = "none";
+                if(dashView) dashView.style.display = "block";
+                if(balanceLbl) balanceLbl.innerText = localStorage.getItem("folliky_balance") || "0";
             }
             loadTasksFromStorage();
             checkAdsLimit();
         };
 
-        // فتح صفحة إنستغرام لتسجيل الدخول مباشرة بدون خانات وهمية
         function openInstagramLogin() {
             localStorage.setItem("folliky_logged", "true");
             if(!localStorage.getItem("folliky_balance")) {
-                localStorage.setItem("folliky_balance", "10"); // نقطة ترحيبية أساسية للبدء
+                localStorage.setItem("folliky_balance", "10");
             }
             window.open("https://www.instagram.com/accounts/login/", "_blank");
             location.reload();
         }
 
-        function openTermsModal() { document.getElementById("modal-terms").style.display = "flex"; }
-        function openNotificationsModal() { document.getElementById("modal-notif").style.display = "flex"; }
-        function closeModals() { document.querySelectorAll('.custom-modal').forEach(m => m.style.display = 'none'); }
+        function openTermsModal() {
+            let m = document.getElementById("modal-terms");
+            if(m) m.style.display = "flex";
+        }
+
+        function openNotificationsModal() {
+            let m = document.getElementById("modal-notif");
+            if(m) m.style.display = "flex";
+        }
+
+        function closeModals() {
+            let modals = document.querySelectorAll('.custom-modal');
+            modals.forEach(m => m.style.display = 'none');
+        }
 
         window.logoutAccount = function() {
             localStorage.removeItem("folliky_logged");
@@ -240,34 +252,55 @@
         window.changeSection = function(secNum, btn) {
             document.querySelectorAll('.content-area').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById(`section-${secNum}`).classList.add('active');
-            btn.classList.add('active');
+            
+            let targetSection = document.getElementById(`section-${secNum}`);
+            if(targetSection) targetSection.classList.add('active');
+            if(btn) btn.classList.add('active');
+            
             if(secNum === 2) loadTasksFromStorage();
         };
 
         window.switchTab = function(tabName) {
+            let subCreate = document.getElementById('sub-create');
+            let subList = document.getElementById('sub-list');
+            let btnCreate = document.getElementById('tab-btn-create');
+            let btnList = document.getElementById('tab-btn-list');
+
             if(tabName === 'create') {
-                document.getElementById('sub-create').style.display = 'block';
-                document.getElementById('sub-list').style.display = 'none';
+                if(subCreate) subCreate.style.display = 'block';
+                if(subList) subList.style.display = 'none';
+                if(btnCreate) { btnCreate.style.background = '#dc2743'; btnCreate.style.color = 'white'; }
+                if(btnList) { btnList.style.background = '#f0f2f5'; btnList.style.color = '#333'; }
             } else {
-                document.getElementById('sub-create').style.display = 'none';
-                document.getElementById('sub-list').style.display = 'block';
+                if(subCreate) subCreate.style.display = 'none';
+                if(subList) subList.style.display = 'block';
+                if(btnList) { btnList.style.background = '#dc2743'; btnList.style.color = 'white'; }
+                if(btnCreate) { btnCreate.style.background = '#f0f2f5'; btnCreate.style.color = '#333'; }
                 loadTasksFromStorage();
             }
         };
 
         window.updateTaskFields = function() {
-            let type = document.getElementById('task-type').value;
-            document.getElementById('comment-box').style.display = (type === 'comment') ? 'block' : 'none';
+            let typeElem = document.getElementById('task-type');
+            let commentBox = document.getElementById('comment-box');
+            if(typeElem && commentBox) {
+                let type = typeElem.value;
+                commentBox.style.display = (type === 'comment') ? 'block' : 'none';
+            }
         };
 
-        // نظام نشر الطلبات وحجز النقاط الحقيقي محلياً (ويمكن ربطه بقاعدة البيانات لاحقاً)
         window.createNewTask = function() {
             if (!isLogged) { alert("يرجى تسجيل الدخول أولاً عبر انستغرام من الصفحة الرئيسية!"); return; }
             
-            let type = document.getElementById('task-type').value;
-            let link = document.getElementById('task-link').value.trim();
-            let points = parseInt(document.getElementById('task-points').value);
+            let typeElem = document.getElementById('task-type');
+            let linkElem = document.getElementById('task-link');
+            let pointsElem = document.getElementById('task-points');
+
+            if(!typeElem || !linkElem || !pointsElem) return;
+
+            let type = typeElem.value;
+            let link = linkElem.value.trim();
+            let points = parseInt(pointsElem.value);
             let cost = type === 'follow' ? 4 : (type === 'like' ? 2 : 7);
 
             if (!link || !points || points < cost) {
@@ -281,31 +314,33 @@
                 return;
             }
 
-            // خصم النقاط وحجزها في الطلب
             localStorage.setItem("folliky_balance", currentBalance - points);
 
             let newTask = {
-                id: Date.now(),
                 type: type,
                 link: link,
                 pointsLeft: points,
                 reward: cost
             };
 
-            let tasks = JSON.parse(localStorage.getItem("folliky_tasks") || "[]');
+            let tasks = JSON.parse(localStorage.getItem("folliky_tasks") || "[]");
             tasks.push(newTask);
             localStorage.setItem("folliky_tasks", JSON.stringify(tasks));
 
             alert("تم نشر طلبك بنجاح وحجز النقاط المستثمرة ليظهر للمستخدمين الآخرين في قائمة الطلبات!");
-            document.getElementById("lbl-balance").innerText = localStorage.getItem("folliky_balance");
-            document.getElementById('task-link').value = "";
-            document.getElementById('task-points').value = "";
+            
+            let balanceLbl = document.getElementById("lbl-balance");
+            if(balanceLbl) balanceLbl.innerText = localStorage.getItem("folliky_balance");
+            
+            linkElem.value = "";
+            pointsElem.value = "";
             switchTab('list');
         };
 
-        // تحميل وعرض الطلبات التي أضافها المستخدمون الآخرون
         function loadTasksFromStorage() {
             let container = document.getElementById('tasks-container');
+            if(!container) return;
+
             let tasks = JSON.parse(localStorage.getItem("folliky_tasks") || "[]");
 
             if (tasks.length === 0) {
@@ -321,30 +356,30 @@
                         <p style="font-size: 14px; font-weight:700; color:#cc2366; margin-bottom:5px;">طلب ${typeName} (الربح: ${task.reward} نقاط)</p>
                         <p style="font-size: 12.5px; color:#666; margin-bottom: 10px; word-break: break-all;">الرابط: <a href="${task.link}" target="_blank" style="color:#0066cc;">${task.link}</a></p>
                         <p style="font-size: 12px; color:#444; margin-bottom: 10px;">النقاط المتبقية في الطلب: ${task.pointsLeft}</p>
-                        <button class="btn-action" style="padding: 10px; font-size:13px; margin:0;" onclick="executeRealTask(${index})">تنفيذ الطلب وربح النقاط</button>
+                        <button class="btn-action" type="button" style="padding: 10px; font-size:13px; margin:0;" onclick="executeRealTask(${index})">تنفيذ الطلب وربح النقاط</button>
                     </div>
                 `;
             });
         }
 
-        // تنفيذ الطلب الفعلي والانتقال للرابط
         window.executeRealTask = function(index) {
             if (!isLogged) { alert("يرجى تسجيل الدخول أولاً!"); return; }
             
             let tasks = JSON.parse(localStorage.getItem("folliky_tasks") || "[]");
-            let task = tasks[index];
+            if(!tasks[index]) return;
 
-            // فتح رابط الحساب أو المنشور على انستغرام
+            let task = tasks[index];
             window.open(task.link, "_blank");
 
-            // بعد محاكاة التنفيذ الحقيقي: إضافة النقاط للمنفذ وخصمها من الطلب
             let myBalance = parseInt(localStorage.getItem("folliky_balance") || "0");
             localStorage.setItem("folliky_balance", myBalance + task.reward);
-            document.getElementById("lbl-balance").innerText = localStorage.getItem("folliky_balance");
+            
+            let balanceLbl = document.getElementById("lbl-balance");
+            if(balanceLbl) balanceLbl.innerText = localStorage.getItem("folliky_balance");
 
             task.pointsLeft -= task.reward;
-            if (task.pointsLeft <= task.reward) {
-                tasks.splice(index, 1); // حذف الطلب إذا نفذ بالكامل
+            if (task.pointsLeft < task.reward) {
+                tasks.splice(index, 1);
             } else {
                 tasks[index] = task;
             }
@@ -354,9 +389,8 @@
             loadTasksFromStorage();
         };
 
-        // نظام الإعلانات اليومي (3 مرات كل 24 ساعة)
-        window.watchAd = function(e) {
-            if (!isLogged) { e.preventDefault(); alert("يرجى تسجيل الدخول أولاً لربح النقاط!"); return; }
+        window.watchAd = function() {
+            if (!isLogged) { alert("يرجى تسجيل الدخول أولاً لربح النقاط!"); return; }
 
             let lastDate = localStorage.getItem("folliky_ads_date") || "";
             let count = parseInt(localStorage.getItem("folliky_ads_count") || "0");
@@ -364,7 +398,6 @@
 
             if (lastDate !== today) { count = 0; localStorage.setItem("folliky_ads_date", today); }
             if (count >= 3) {
-                e.preventDefault();
                 alert("لقد تجاوزت الحد الأقصى للمشاهدة اليومية (3 إعلانات كل 24 ساعة).");
                 return;
             }
@@ -372,6 +405,11 @@
             localStorage.setItem("folliky_ads_count", count + 1);
             let myBalance = parseInt(localStorage.getItem("folliky_balance") || "0");
             localStorage.setItem("folliky_balance", myBalance + 10);
+            
+            let balanceLbl = document.getElementById("lbl-balance");
+            if(balanceLbl) balanceLbl.innerText = localStorage.getItem("folliky_balance");
+
+            alert("تم مشاهدة الإعلان بنجاح وإضافة 10 نقاط لرصيدك!");
             checkAdsLimit();
         };
 
@@ -379,7 +417,8 @@
             let count = parseInt(localStorage.getItem("folliky_ads_count") || "0");
             let lastDate = localStorage.getItem("folliky_ads_date") || "";
             if (lastDate !== new Date().toDateString()) count = 0;
-            document.getElementById("ads-count").innerText = (3 - count);
+            let adsCountElem = document.getElementById("ads-count");
+            if(adsCountElem) adsCountElem.innerText = (3 - count);
         }
     </script>
 </body>
